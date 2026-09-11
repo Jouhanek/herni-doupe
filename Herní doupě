@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herní doupě</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Herní doupě</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Domů</a></li>
+                <li><a href="games.html">Hry</a></li>
+                <li><a href="about.html">O nás</a></li>
+                <li><a href="contact.html">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2>Vítejte v Herním doupěti!</h2>
+            <p>Objevte nejlepší hry a zábavu pro všechny hráče.</p>
+            <a href="games.html" class="btn">Prozkoumat hry</a>
+        </section>
+
+        <section class="featured-games">
+            <h2>Nejnovější hry</h2>
+            <div class="game-list">
+                <!-- Zde budou zobrazeny nejnovější hry -->
+            </div>
+        </section>
+
+        <section class="about">
+            <h2>O nás</h2>
+            <p>Herní doupě je místo, kde se setkávají hráči všech věkových kategorií. Nabízíme recenze, tipy a triky pro vaše oblíbené hry.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Herní doupě. Všechna práva vyhrazena.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
