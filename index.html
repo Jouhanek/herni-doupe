@@ -38,9 +38,10 @@
             <h2>O nás</h2>
             <p>Herní doupě je místo, kde se o hrách můžete dozvědět více, než jen od kamarádů. Můžete zde najít také recenze, nebo se po přihlášení zapojit do diskuzí o hrách</p>
         </section>
-        <!-- REGISTRACE A PŘIHLÁŠENÍ -->
+        <!-- SEKCION PRO REGISTRACI A PŘIHLÁŠENÍ -->
 <section style="background: rgba(255, 255, 255, 0.9); padding: 20px; margin: 20px 0; border-radius: 8px;">
 <h2>Účet hráče</h2>
+
 <form id="auth-form">
 <input type="text" id="username" placeholder="Tvoje přezdívka" style="padding: 8px; margin-bottom: 10px;"><br>
 <input type="email" id="email" placeholder="Tvůj e-mail" required style="padding: 8px; margin-bottom: 10px;"><br>
@@ -49,15 +50,43 @@
 <button type="button" onclick="signIn()" class="btn" style="background-color: #0c3033; color: #fff; padding: 10px 20px; border: none; cursor: pointer;">Přihlásit se</button>
 </form>
 
+<!-- NOVOST: Blok pro přihlášeného uživatele -->
+<div id="user-profile" style="display: none;">
+<p id="welcome-message" style="font-weight: bold; font-size: 1.1em;"></p>
+<button type="button" onclick="signOut()" class="btn" style="background-color: #8b0000; color: #fff; padding: 10px 20px; border: none; cursor: pointer;">Odhlásit se</button>
+</div>
+
 <p id="status" style="margin-top: 15px; font-weight: bold; color: #104246;"></p>
 </section>
 
-<!-- JAVASCRIPT -->
+<!-- JAVASCRIPT LOGIKA -->
 <script>
 const SUPABASE_URL = 'https://pgbyzfnctvwxdiwncvtt.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_pNVWleewg1y9WY3X5dLcyw_4VWyFTOc';
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// NOVOST: Funkce, která schová formulář po přihlášení
+async function updateUI() {
+const { data: { user } } = await supabaseClient.auth.getUser();
+
+const authForm = document.getElementById('auth-form');
+const userProfile = document.getElementById('user-profile');
+const welcomeMessage = document.getElementById('welcome-message');
+
+if (user) {
+authForm.style.display = 'none';
+userProfile.style.display = 'block';
+
+const username = user.user_metadata?.username || user.email;
+const role = user.user_metadata?.role;
+
+welcomeMessage.innerHTML = `Vítej zpět, hráči <strong>${username}</strong>! ${role === 'admin' ? '👑 (Admin)' : ''}`;
+} else {
+authForm.style.display = 'block';
+userProfile.style.display = 'none';
+}
+}
 
 async function signUp() {
 const username = document.getElementById('username').value;
@@ -69,13 +98,12 @@ document.getElementById('status').innerText = 'Chyba: Zadaj přezdívku!';
 return;
 }
 
-// Uložení e-mailu, hesla a přezdívky do Supabase
 const { data, error } = await supabaseClient.auth.signUp({
 email: email,
 password: password,
 options: {
 data: {
-username: username // Přezdívka se uloží do účtu
+username: username
 }
 }
 });
@@ -83,7 +111,7 @@ username: username // Přezdívka se uloží do účtu
 if (error) {
 document.getElementById('status').innerText = 'Chyba: ' + error.message;
 } else {
-document.getElementById('status').innerText = 'Registrace byla úspěšná, hráči ' + username + '!';
+document.getElementById('status').innerText = 'Registrace byla úspěšná! Zkontroluj e-mail a potvrd účet.';
 }
 }
 
@@ -96,11 +124,20 @@ const { data, error } = await supabaseClient.auth.signInWithPassword({ email, pa
 if (error) {
 document.getElementById('status').innerText = 'Chyba: ' + error.message;
 } else {
-// Získání uložené přezdívky z přihlášeného účtu
-const username = data.user.user_metadata.username || data.user.email;
-document.getElementById('status').innerText = 'Vítej zpět, hráči ' + username + '!';
+document.getElementById('status').innerText = '';
+updateUI(); // NOVOST: Aktualizuje rozhraní po přihlášení
 }
 }
+
+// NOVOST: Odhlášení
+async function signOut() {
+await supabaseClient.auth.signOut();
+document.getElementById('status').innerText = 'Byl jsi odhlášen.';
+updateUI();
+}
+
+// Spustí kontrolu stavu přihlášení při načtení stránky
+updateUI();
 </script>
     </main>
 
