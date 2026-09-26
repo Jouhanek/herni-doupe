@@ -6,6 +6,7 @@
     <title>Herní doupě</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="favicon.png">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body style="background-image: url('pozadihernidoupe.jpg'); background-size: cover; background-attachment: fixed; min-height: 100vh;">
     <header>
@@ -35,8 +36,72 @@
 
         <section class="about">
             <h2>O nás</h2>
-            <p>Herní doupě je místo, kde se o hrách můžete dozvědět více než jen od kamarádů"</div> Nabízíme recenze, tipy a triky pro vaše oblíbené hry.</p>
+            <p>Herní doupě je místo, kde se o hrách můžete dozvědět více, než jen od kamarádů. Můžete zde najít také recenze, nebo se po přihlášení zapojit do diskuzí o hrách</p>
         </section>
+        <!-- REGISTRACE A PŘIHLÁŠENÍ -->
+<section style="background: rgba(255, 255, 255, 0.9); padding: 20px; margin: 20px 0; border-radius: 8px;">
+<h2>Účet hráče</h2>
+<form id="auth-form">
+<input type="text" id="username" placeholder="Tvoje přezdívka" style="padding: 8px; margin-bottom: 10px;"><br>
+<input type="email" id="email" placeholder="Tvůj e-mail" required style="padding: 8px; margin-bottom: 10px;"><br>
+<input type="password" id="password" placeholder="Heslo" required style="padding: 8px; margin-bottom: 10px;"><br>
+<button type="button" onclick="signUp()" class="btn" style="background-color: #104246; color: #fff; padding: 10px 20px; border: none; cursor: pointer;">Registrovat</button>
+<button type="button" onclick="signIn()" class="btn" style="background-color: #0c3033; color: #fff; padding: 10px 20px; border: none; cursor: pointer;">Přihlásit se</button>
+</form>
+
+<p id="status" style="margin-top: 15px; font-weight: bold; color: #104246;"></p>
+</section>
+
+<!-- JAVASCRIPT -->
+<script>
+const SUPABASE_URL = 'https://pgbyzfnctvwxdiwncvtt.supabase.co/rest/v1/';
+const SUPABASE_KEY = 'sb_publishable_pNVWleewg1y9WY3X5dLcyw_4VWyFTOc';
+
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function signUp() {
+const username = document.getElementById('username').value;
+const email = document.getElementById('email').value;
+const password = document.getElementById('password').value;
+
+if (!username) {
+document.getElementById('status').innerText = 'Chyba: Zadaj přezdívku!';
+return;
+}
+
+// Uložení e-mailu, hesla a přezdívky do Supabase
+const { data, error } = await supabaseClient.auth.signUp({
+email: email,
+password: password,
+options: {
+data: {
+username: username // Přezdívka se uloží do účtu
+}
+}
+});
+
+if (error) {
+document.getElementById('status').innerText = 'Chyba: ' + error.message;
+} else {
+document.getElementById('status').innerText = 'Registrace byla úspěšná, hráči ' + username + '!';
+}
+}
+
+async function signIn() {
+const email = document.getElementById('email').value;
+const password = document.getElementById('password').value;
+
+const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+if (error) {
+document.getElementById('status').innerText = 'Chyba: ' + error.message;
+} else {
+// Získání uložené přezdívky z přihlášeného účtu
+const username = data.user.user_metadata.username || data.user.email;
+document.getElementById('status').innerText = 'Vítej zpět, hráči ' + username + '!';
+}
+}
+</script>
     </main>
 
     <footer>
