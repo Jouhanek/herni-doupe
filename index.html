@@ -81,7 +81,7 @@ userProfile.style.display = 'block';
 const username = user.user_metadata?.username || user.email;
 const role = user.user_metadata?.role;
 
-welcomeMessage.innerHTML = `Vítej zpět, hráči <strong>${username}</strong>! ${role === 'admin' ? '👑 (Admin)' : ''}`;
+welcomeMessage.innerHTML = `Vítej zpět, uživateli <strong>${username}</strong>! ${role === 'admin' ? '👑 (Admin)' : ''}`;
 } else {
 authForm.style.display = 'block';
 userProfile.style.display = 'none';
@@ -94,7 +94,7 @@ const email = document.getElementById('email').value;
 const password = document.getElementById('password').value;
 
 if (!username) {
-document.getElementById('status').innerText = 'Chyba: Zadaj přezdívku!';
+document.getElementById('status').innerText = 'Chyba: Zadej přezdívku!';
 return;
 }
 
@@ -111,7 +111,7 @@ username: username
 if (error) {
 document.getElementById('status').innerText = 'Chyba: ' + error.message;
 } else {
-document.getElementById('status').innerText = 'Registrace byla úspěšná! Zkontroluj e-mail a potvrd účet.';
+document.getElementById('status').innerText = 'Registrace byla úspěšná! Zkontroluj svůj e-mail a potvrď registraci účtu.';
 }
 }
 
