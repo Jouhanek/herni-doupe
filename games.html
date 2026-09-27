@@ -12,15 +12,7 @@
     <header>
         <h1 style="text-align: center; color: #0c3033; font-family: 'Arial Black', 'Impact', sans-serif;">Herní doupě</h1>
         <nav style="text-align: center; margin-top: 10px;">
-            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px;">
-                <li><a href="index.html" class="btn" style="background-color: #104246;; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Domů</a></li>
-                <li><a href="games.html" class="btn" style="background-color: #104246;; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Hry</a></li>
-                <li><a href="about.html" class="btn" style="background-color: #104246;; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">O nás</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <main>
 <!-- SEKCION PRO REGISTRACI A PŘIHLÁŠENÍ -->
 <section style="background: rgba(255, 255, 255, 0.9); padding: 20px; margin: 20px 0; border-radius: 8px;">
 <h2>Účet hráče</h2>
@@ -94,7 +86,7 @@ username: username
 if (error) {
 document.getElementById('status').innerText = 'Chyba: ' + error.message;
 } else {
-document.getElementById('status').innerText = 'Registrace byla úspěšná! Zkontroluj e-mail a potvrd účet.';
+document.getElementById('status').innerText = 'Registrace byla úspěšná! Zkontroluj svůj e-mail a potvrď registraci účtu.';
 }
 }
 
@@ -121,7 +113,18 @@ updateUI();
 
 // Spustí kontrolu stavu přihlášení při načtení stránky
 updateUI();
-</script>
+</script></nav>
+        <nav style="text-align: center; margin-top: 10px;">
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px;">
+                <li><a href="index.html" class="btn" style="background-color: #104246;; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Domů</a></li>
+                <li><a href="games.html" class="btn" style="background-color: #104246;; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Hry</a></li>
+                <li><a href="about.html" class="btn" style="background-color: #104246;; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">O nás</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+<p style="text-align: center; background-color: #104246;; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Zde bude již brzy mnoho informací o hrách!</p>
     </main>
 
     <footer>
