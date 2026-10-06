@@ -7,6 +7,74 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="favicon.png">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+    /* Základní styl stránky */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f9;
+    }
+
+    /* Mřížka (Grid) pro galerii */
+    .galerie {
+      display: grid;
+      /* Vytvoří 4 stejně široké sloupce */
+      grid-template-columns: repeat(4, 1fr); 
+      gap: 20px; /* Mezera mezi kartami */
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Karta jednoho obrázku */
+    .galerie-polozka {
+      background-color: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* Efekt při najetí myší na kartu */
+    .galerie-polozka:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Styl nadpisu NAD obrázkem */
+    .galerie-polozka h3 {
+      margin: 0;
+      padding: 12px;
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    /* Odkaz, který obaluje obrázek */
+    .galerie-polozka a {
+      display: block;
+      text-decoration: none;
+    }
+
+    /* Styl obrázku */
+    .galerie-polozka img {
+      width: 100%;
+      height: 200px; /* Pevná výška obrázku */
+      object-fit: cover; /* Obrázek se ořízne, aby neztratil poměr stran */
+      display: block;
+    }
+
+    /* Responsivita: Na mobilu se zobrazí pod sebou, na tabletu po 2 */
+    @media (max-width: 900px) {
+      .galerie {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .galerie {
+        grid-template-columns: 1fr;
+      }
+    }
 </head>
 <body style="background-image: url('pozadihernidoupe.jpg'); background-size: cover; background-attachment: fixed; min-height: 100vh;">
     <header>
@@ -123,74 +191,7 @@ updateUI();
         </nav>
     </header>
 
-    <main>
-{
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #104246;
-    }
-
-    /* Mřížka (Grid) pro galerii */
-    .galerie {
-      display: grid;
-      /* Vytvoří 4 stejně široké sloupce */
-      grid-template-columns: repeat(4, 1fr); 
-      gap: 20px; /* Mezera mezi kartami */
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* Karta jednoho obrázku */
-    .galerie-polozka {
-      background-color: #ffffff;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    /* Efekt při najetí myší na kartu */
-    .galerie-polozka:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-    }
-
-    /* Styl nadpisu NAD obrázkem */
-    .galerie-polozka h3 {
-      margin: 0;
-      padding: 12px;
-      font-size: 1.1rem;
-      color: #333;
-    }
-
-    /* Odkaz, který obaluje obrázek */
-    .galerie-polozka a {
-      display: block;
-      text-decoration: none;
-    }
-
-    /* Styl obrázku */
-    .galerie-polozka img {
-      width: 100%;
-      height: 200px; /* Pevná výška obrázku */
-      object-fit: cover; /* Obrázek se ořízne, aby neztratil poměr stran */
-      display: block;
-    }
-
-    /* Responsivita: Na mobilu se zobrazí pod sebou, na tabletu po 2 */
-    @media (max-width: 900px) {
-      .galerie {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 500px) {
-      .galerie {
-        grid-template-columns: 1fr;
-      }
-    }
-  <h2 style="text-align: center;">Moje Galerie</h2>
+    <main><h2 style="text-align: center;">Nejhranější hry</h2>
 
   <div class="galerie">
 
