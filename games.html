@@ -124,7 +124,141 @@ updateUI();
     </header>
 
     <main>
-<p style="text-align: center; background-color: #104246;; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Zde bude již brzy mnoho informací o hrách!</p>
+{
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #104246;
+    }
+
+    /* Mřížka (Grid) pro galerii */
+    .galerie {
+      display: grid;
+      /* Vytvoří 4 stejně široké sloupce */
+      grid-template-columns: repeat(4, 1fr); 
+      gap: 20px; /* Mezera mezi kartami */
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Karta jednoho obrázku */
+    .galerie-polozka {
+      background-color: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* Efekt při najetí myší na kartu */
+    .galerie-polozka:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Styl nadpisu NAD obrázkem */
+    .galerie-polozka h3 {
+      margin: 0;
+      padding: 12px;
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    /* Odkaz, který obaluje obrázek */
+    .galerie-polozka a {
+      display: block;
+      text-decoration: none;
+    }
+
+    /* Styl obrázku */
+    .galerie-polozka img {
+      width: 100%;
+      height: 200px; /* Pevná výška obrázku */
+      object-fit: cover; /* Obrázek se ořízne, aby neztratil poměr stran */
+      display: block;
+    }
+
+    /* Responsivita: Na mobilu se zobrazí pod sebou, na tabletu po 2 */
+    @media (max-width: 900px) {
+      .galerie {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .galerie {
+        grid-template-columns: 1fr;
+      }
+    }
+  <h2 style="text-align: center;">Moje Galerie</h2>
+
+  <div class="galerie">
+
+    <!-- Obrázek 1 -->
+    <div class="galerie-polozka">
+      <h3>Minecraft</h3>
+      <a href="https://www.google.com" target="_blank">
+        <img src="https://picsum.photos/300/200?random=1" alt="Obrázek 1">
+      </a>
+    </div>
+
+    <!-- Obrázek 2 -->
+    <div class="galerie-polozka">
+      <h3>Roblox</h3>
+      <a href="https://www.wikipedia.org" target="_blank">
+        <img src="https://picsum.photos/300/200?random=2" alt="Obrázek 2">
+      </a>
+    </div>
+
+    <!-- Obrázek 3 -->
+    <div class="galerie-polozka">
+      <h3>Brawl Stars</h3>
+      <a href="https://www.seznam.cz" target="_blank">
+        <img src="https://picsum.photos/300/200?random=3" alt="Obrázek 3">
+      </a>
+    </div>
+
+    <!-- Obrázek 4 -->
+    <div class="galerie-polozka">
+      <h3>Fortnite</h3>
+      <a href="https://www.youtube.com" target="_blank">
+        <img src="https://picsum.photos/300/200?random=4" alt="Obrázek 4">
+      </a>
+    </div>
+
+    <!-- Obrázek 5 -->
+    <div class="galerie-polozka">
+      <h3>CS:GO</h3>
+      <a href="https://www.github.com" target="_blank">
+        <img src="https://picsum.photos/300/200?random=5" alt="Obrázek 5">
+      </a>
+    </div>
+
+    <!-- Obrázek 6 -->
+    <div class="galerie-polozka">
+      <h3>Among Us</h3>
+      <a href="https://www.reddit.com" target="_blank">
+        <img src="https://picsum.photos/300/200?random=6" alt="Obrázek 6">
+      </a>
+    </div>
+
+    <!-- Obrázek 7 -->
+    <div class="galerie-polozka">
+      <h3>Bloons TD6</h3>
+      <a href="https://www.w3schools.com" target="_blank">
+        <img src="https://picsum.photos/300/200?random=7" alt="Obrázek 7">
+      </a>
+    </div>
+
+    <!-- Obrázek 8 -->
+    <div class="galerie-polozka">
+      <h3>Valorant</h3>
+      <a href="https://www.developer.mozilla.org" target="_blank">
+        <img src="https://picsum.photos/300/200?random=8" alt="Obrázek 8">
+      </a>
+    </div>
+
+  </div>
     </main>
 
     <footer>
