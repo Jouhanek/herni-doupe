@@ -124,7 +124,42 @@ updateUI();
     </header>
 
     <main><h2 style="text-align: center;">Nejhranější hry</h2>
+<style>
+  /* Mřížka, která vysází položky do 3 sloupců */
+  .galerie {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 stejně široké sloupce */
+    gap: 20px; /* Mezera mezi kartami */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
 
+  /* Styl pro jednotlivé karty v galerii */
+  .galerie-polozka {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  /* Sjednocení velikosti všech obrázků */
+  .galerie-polozka img {
+    width: 100%;
+    height: 200px; /* Pevná výška pro všechny obrázky */
+    object-fit: cover; /* Ořízne obrázek tak, aby deformací neztratil poměr stran */
+    border-radius: 5px;
+    display: block;
+  }
+
+  /* Úprava pro mobilní telefony (aby 3 sloupce na malém displeji nebyly moc zmáčknuté) */
+  @media (max-width: 768px) {
+    .galerie {
+      grid-template-columns: 1fr; /* Na mobilu budou pod sebou */
+    }
+  }
+</style>
   <div class="galerie">
 
     <!-- Obrázek 1 -->
