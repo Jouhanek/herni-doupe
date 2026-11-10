@@ -1,1 +1,137 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herní doupě</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body style="background-image: url('pozadihernidoupe.jpg'); background-size: cover; background-attachment: fixed; min-height: 100vh;">
+    <header>
+        <h1 style="text-align: center; color: #0c3033; font-family: 'Arial Black', 'Impact', sans-serif;">Herní doupě</h1>
+        <h2 style="text-align: center; color: #00FF00; font-family: 'Arial Black', 'Impact', sans-serif;">Brawl Stars</h2>
+        <nav style="text-align: center; margin-top: 10px;">
 
+<!-- SEKCION PRO REGISTRACI A PŘIHLÁŠENÍ -->
+<section style="background: rgba(255, 255, 255, 0.9); padding: 20px; margin: 20px 0; border-radius: 8px;">
+<h2>Účet hráče</h2>
+
+<form id="auth-form">
+<input type="text" id="username" placeholder="Tvoje přezdívka" style="padding: 8px; margin-bottom: 10px;"><br>
+<input type="email" id="email" placeholder="Tvůj e-mail" required style="padding: 8px; margin-bottom: 10px;"><br>
+<input type="password" id="password" placeholder="Heslo" required style="padding: 8px; margin-bottom: 10px;"><br>
+<button type="button" onclick="signUp()" class="btn" style="background-color: #104246; color: #fff; padding: 10px 20px; border: none; cursor: pointer;">Registrovat</button>
+<button type="button" onclick="signIn()" class="btn" style="background-color: #0c3033; color: #fff; padding: 10px 20px; border: none; cursor: pointer;">Přihlásit se</button>
+</form>
+
+<!-- NOVOST: Blok pro přihlášeného uživatele -->
+<div id="user-profile" style="display: none;">
+<p id="welcome-message" style="font-weight: bold; font-size: 1.1em;"></p>
+<button type="button" onclick="signOut()" class="btn" style="background-color: #8b0000; color: #fff; padding: 10px 20px; border: none; cursor: pointer;">Odhlásit se</button>
+</div>
+
+<p id="status" style="margin-top: 15px; font-weight: bold; color: #104246;"></p>
+</section>
+
+<!-- JAVASCRIPT LOGIKA -->
+<script>
+const SUPABASE_URL = 'https://pgbyzfnctvwxdiwncvtt.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_pNVWleewg1y9WY3X5dLcyw_4VWyFTOc';
+
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// NOVOST: Funkce, která schová formulář po přihlášení
+async function updateUI() {
+const { data: { user } } = await supabaseClient.auth.getUser();
+
+const authForm = document.getElementById('auth-form');
+const userProfile = document.getElementById('user-profile');
+const welcomeMessage = document.getElementById('welcome-message');
+
+if (user) {
+authForm.style.display = 'none';
+userProfile.style.display = 'block';
+
+const username = user.user_metadata?.username || user.email;
+const role = user.user_metadata?.role;
+
+welcomeMessage.innerHTML = `Vítej zpět, uživateli <strong>${username}</strong>! ${role === 'admin' ? '👑 (Admin)' : ''}`;
+} else {
+authForm.style.display = 'block';
+userProfile.style.display = 'none';
+}
+}
+
+async function signUp() {
+const username = document.getElementById('username').value;
+const email = document.getElementById('email').value;
+const password = document.getElementById('password').value;
+
+if (!username) {
+document.getElementById('status').innerText = 'Chyba: Zadaj přezdívku!';
+return;
+}
+
+const { data, error } = await supabaseClient.auth.signUp({
+email: email,
+password: password,
+options: {
+data: {
+username: username
+}
+}
+});
+
+if (error) {
+document.getElementById('status').innerText = 'Chyba: ' + error.message;
+} else {
+document.getElementById('status').innerText = 'Registrace byla úspěšná! Zkontroluj svůj e-mail a potvrď registraci účtu.';
+}
+}
+
+async function signIn() {
+const email = document.getElementById('email').value;
+const password = document.getElementById('password').value;
+
+const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+if (error) {
+document.getElementById('status').innerText = 'Chyba: ' + error.message;
+} else {
+document.getElementById('status').innerText = '';
+updateUI(); // NOVOST: Aktualizuje rozhraní po přihlášení
+}
+}
+
+// NOVOST: Odhlášení
+async function signOut() {
+await supabaseClient.auth.signOut();
+document.getElementById('status').innerText = 'Byl jsi odhlášen.';
+updateUI();
+}
+
+// Spustí kontrolu stavu přihlášení při načtení stránky
+updateUI();
+</script></nav>
+        <nav style="text-align: center; margin-top: 10px;">
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px;">
+                <li><a href="index.html" class="btn" style="background-color: #104246;; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Domů</a></li>
+                <li><a href="games.html" class="btn" style="background-color: #104246;; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Hry</a></li>
+                <li><a href="about.html" class="btn" style="background-color: #104246;; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">O nás</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <img src="minecraft.jpg">
+<p style="text-align: center; background-color: #008000;; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Zde bude text o Brawl Stars.</p>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Herní doupě. Všechna práva vyhrazena.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
