@@ -33,94 +33,7 @@
 
 <p id="status" style="margin-top: 15px; font-weight: bold; color: #104246;"></p>
 </section>
-
-<!-- JAVASCRIPT LOGIKA -->
-<script>
-const SUPABASE_URL = 'https://pgbyzfnctvwxdiwncvtt.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_pNVWleewg1y9WY3X5dLcyw_4VWyFTOc';
-
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// NOVOST: Funkce, která schová formulář po přihlášení
-async function updateUI() {
-const { data: { user } } = await supabaseClient.auth.getUser();
-
-const authForm = document.getElementById('auth-form');
-const userProfile = document.getElementById('user-profile');
-const welcomeMessage = document.getElementById('welcome-message');
-const postFormContainer = document.getElementById('post-form-container');
-const loginNotice = document.getElementById('login-notice');
-
-if (user) {
-authForm.style.display = 'none';
-userProfile.style.display = 'block';
-
-const username = user.user_metadata?.username || user.email;
-const role = user.user_metadata?.role;
-
-welcomeMessage.innerHTML = `Vítej zpět, uživateli <strong>${username}</strong>!${role === 'admin' ? '👑 (Admin)' : ''}`;
-if (postFormContainer) postFormContainer.style.display = 'block';
-if (loginNotice) loginNotice.style.display = 'none';
-} else {
-authForm.style.display = 'block';
-userProfile.style.display = 'none';
-
-if (postFormContainer) postFormContainer.style.display = 'none';
-if (loginNotice) loginNotice.style.display = 'block';
-}
-}
-
-async function signUp() {
-const username = document.getElementById('username').value;
-const email = document.getElementById('email').value;
-const password = document.getElementById('password').value;
-
-if (!username) {
-document.getElementById('status').innerText = 'Chyba: Zadaj přezdívku!';
-return;
-}
-
-const { data, error } = await supabaseClient.auth.signUp({
-email: email,
-password: password,
-options: {
-data: {
-username: username
-}
-}
-});
-
-if (error) {
-document.getElementById('status').innerText = 'Chyba: ' + error.message;
-} else {
-document.getElementById('status').innerText = 'Registrace byla úspěšná! Zkontroluj svůj e-mail a potvrď registraci účtu.';
-}
-}
-
-async function signIn() {
-const email = document.getElementById('email').value;
-const password = document.getElementById('password').value;
-
-const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-
-if (error) {
-document.getElementById('status').innerText = 'Chyba: ' + error.message;
-} else {
-document.getElementById('status').innerText = '';
-updateUI(); // NOVOST: Aktualizuje rozhraní po přihlášení
-}
-}
-
-// NOVOST: Odhlášení
-async function signOut() {
-await supabaseClient.auth.signOut();
-document.getElementById('status').innerText = 'Byl jsi odhlášen.';
-updateUI();
-}
-
-// Spustí kontrolu stavu přihlášení při načtení stránky
-updateUI();
-</script></nav>
+</nav>
         <nav style="text-align: center; margin-top: 10px;">
             <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px;">
                 <li><a href="index.html" class="btn" style="background-color: #104246;; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Domů</a></li>
@@ -256,31 +169,190 @@ updateUI();
         <p>Načítám příspěvky...</p>
     </div>
 </section>
+    </main>
 
-<script>
-const postInput = document.getElementById('post-input');
-const charCount = document.getElementById('char-count');
+    <footer>
+        <p>&copy; 2026 Herní doupě. Všechna práva vyhrazena.</p>
+    </footer>
 
-function updateCharCount() {
-    if (!postInput || !charCount) return;
-    charCount.innerText = 200 - postInput.value.length;
-}
+    <script src="script.js"></script>
 
-postInput.addEventListener('input', updateCharCount);
+    <!-- SPOJENÁ JAVASCRIPT LOGIKA (PŘIHLÁŠENÍ + DISKUZE) -->
+    <script>
+    const SUPABASE_URL = 'https://pgbyzfnctvwxdiwncvtt.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_pNVWleewg1y9WY3X5dLcyw_4VWyFTOc';
 
-function escapeHTML(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-}
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-async function loadPosts() {
-    const postsList = document.getElementById('posts-list');
-    const { data, error } = await supabaseClient
-        .from('posts')
-        .select('id, author_name, content, created_at')
-        .order('created_at', { ascending: false })
-        .limit(50);
+    function escapeHTML(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
 
-    if (error) {
-        postsList.innerHTML = `<p style="color: #8b0000;">Nepodařilo se načíst příspěvky:
+    async function updateUI() {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+
+        const authForm = document.getElementById('auth-form');
+        const userProfile = document.getElementById('user-profile');
+        const welcomeMessage = document.getElementById('welcome-message');
+        const postFormContainer = document.getElementById('post-form-container');
+        const loginNotice = document.getElementById('login-notice');
+
+        if (user) {
+            if (authForm) authForm.style.display = 'none';
+            if (userProfile) userProfile.style.display = 'block';
+
+            const username = user.user_metadata?.username || user.email;
+            const role = user.user_metadata?.role;
+
+            if (welcomeMessage) {
+                welcomeMessage.innerHTML = `Vítej zpět, uživateli <strong>${escapeHTML(username)}</strong>! ${role === 'admin' ? '👑 (Admin)' : ''}`;
+            }
+            if (postFormContainer) postFormContainer.style.display = 'block';
+            if (loginNotice) loginNotice.style.display = 'none';
+        } else {
+            if (authForm) authForm.style.display = 'block';
+            if (userProfile) userProfile.style.display = 'none';
+
+            if (postFormContainer) postFormContainer.style.display = 'none';
+            if (loginNotice) loginNotice.style.display = 'block';
+        }
+    }
+
+    async function signUp() {
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        if (!username) {
+            document.getElementById('status').innerText = 'Chyba: Zadej přezdívku!';
+            return;
+        }
+
+        const { error } = await supabaseClient.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                data: {
+                    username: username
+                }
+            }
+        });
+
+        if (error) {
+            document.getElementById('status').innerText = 'Chyba: ' + error.message;
+        } else {
+            document.getElementById('status').innerText = 'Registrace byla úspěšná! Zkontroluj svůj e-mail a potvrď registraci účtu.';
+        }
+    }
+
+    async function signIn() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+        if (error) {
+            document.getElementById('status').innerText = 'Chyba: ' + error.message;
+        } else {
+            document.getElementById('status').innerText = '';
+            await updateUI();
+        }
+    }
+
+    async function signOut() {
+        await supabaseClient.auth.signOut();
+        document.getElementById('status').innerText = 'Byl jsi odhlášen.';
+        await updateUI();
+    }
+
+    const postInput = document.getElementById('post-input');
+    const charCount = document.getElementById('char-count');
+
+    function updateCharCount() {
+        if (!postInput || !charCount) return;
+        charCount.innerText = 200 - postInput.value.length;
+    }
+
+    if (postInput) {
+        postInput.addEventListener('input', updateCharCount);
+    }
+
+    async function loadPosts() {
+        const postsList = document.getElementById('posts-list');
+        if (!postsList) return;
+
+        const { data, error } = await supabaseClient
+            .from('posts')
+            .select('id, author_name, content, created_at')
+            .order('created_at', { ascending: false })
+            .limit(50);
+
+        if (error) {
+            postsList.innerHTML = `<p style="color: #8b0000;">Nepodařilo se načíst příspěvky: ${escapeHTML(error.message)}</p>`;
+            return;
+        }
+
+        if (!data || data.length === 0) {
+            postsList.innerHTML = '<p>Zatím tu nejsou žádné příspěvky. Buď první!</p>';
+            return;
+        }
+
+        postsList.innerHTML = data.map((post) => {
+            const dateStr = new Date(post.created_at).toLocaleString('cs-CZ');
+            return `
+                <article style="background: rgba(255, 255, 255, 0.85); padding: 12px 15px; margin-bottom: 12px; border-radius: 6px; border-left: 4px solid #104246;">
+                    <div style="font-weight: bold; color: #0c3033; margin-bottom: 4px;">
+                        ${escapeHTML(post.author_name)} <span style="font-weight: normal; font-size: 0.8em; color: #555;">• ${escapeHTML(dateStr)}</span>
+                    </div>
+                    <p style="margin: 0; word-wrap: break-word;">${escapeHTML(post.content)}</p>
+                </article>
+            `;
+        }).join('');
+    }
+
+    async function publishPost() {
+        const statusEl = document.getElementById('post-status');
+        const publishBtn = document.getElementById('publish-btn');
+        const content = postInput ? postInput.value.trim() : '';
+
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) {
+            statusEl.style.color = '#8b0000';
+            statusEl.innerText = 'Musíš být přihlášený!';
+            return;
+        }
+
+        if (!content) {
+            statusEl.style.color = '#8b0000';
+            statusEl.innerText = 'Příspěvek nemůže být prázdný.';
+            return;
+        }
+
+        if (content.length > 200) {
+            statusEl.style.color = '#8b0000';
+            statusEl.innerText = 'Příspěvek může mít maximálně 200 znaků.';
+            return;
+        }
+
+        const authorName = user.user_metadata?.username || user.email;
+        publishBtn.disabled = true;
+        statusEl.style.color = '#104246';
+        statusEl.innerText = 'Zveřejňuji...';
+
+        const { error } = await supabaseClient
+            .from('posts')
+            .insert({
+                user_id: user.id,
+                author_name: authorName,
+                content: content
+            });
+
+        publishBtn.disabled = false;
+
+        if (error) {
+            statusEl.style.color = '#8b0000';
+            statusEl.innerText = 'Chyba při zveřejňování: ' + error.message;
+            return;
+        }
