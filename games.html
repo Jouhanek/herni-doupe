@@ -291,7 +291,7 @@
 
             const { data, error } = await supabaseClient
                 .from('posts')
-                .select('id, author_name, content, created_at')
+                .select('id, author_name, author_role, content, created_at')
                 .order('created_at', { ascending: false })
                 .limit(50);
 
@@ -307,10 +307,11 @@
 
             postsList.innerHTML = data.map((post) => {
                 const dateStr = new Date(post.created_at).toLocaleString('cs-CZ');
+                const crownBadge = post.author_role === 'admin' ? ' 👑' : '';
                 return `
                     <article style="background: rgba(255, 255, 255, 0.85); padding: 12px 15px; margin-bottom: 12px; border-radius: 6px; border-left: 4px solid #104246;">
                         <div style="font-weight: bold; color: #0c3033; margin-bottom: 4px;">
-                            ${escapeHTML(post.author_name)} <span style="font-weight: normal; font-size: 0.8em; color: #555;">• ${escapeHTML(dateStr)}</span>
+                            ${escapeHTML(post.author_name)}${crownBadge} <span style="font-weight: normal; font-size: 0.8em; color: #555;">• ${escapeHTML(dateStr)}</span>
                         </div>
                         <p style="margin: 0; word-wrap: break-word;">${escapeHTML(post.content)}</p>
                     </article>
@@ -349,6 +350,7 @@
             }
 
             const authorName = user.user_metadata?.username || user.email;
+            const authorRole = user.user_metadata?.role || null;
             if (publishBtn) publishBtn.disabled = true;
             if (statusEl) {
                 statusEl.style.color = '#104246';
@@ -360,6 +362,7 @@
                 .insert({
                     user_id: user.id,
                     author_name: authorName,
+                    author_role: authorRole,
                     content: content
                 });
 
